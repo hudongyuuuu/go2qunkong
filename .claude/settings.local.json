@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip show *)",
+      "Bash(python -c \"import go2_webrtc_driver; print\\(go2_webrtc_driver.__file__\\)\")",
+      "Bash(xargs grep -l \"SDP\\\\|sdp\\\\|offer\\\\|answer\")",
+      "Bash(xargs grep -l \"RSA\\\\|rsa\\\\|encrypt\\\\|decrypt\")",
+      "Bash(xargs grep -l \"strArr\\\\|Character.*not found\")",
+      "Bash(python3 -c \"import sys; print\\('\\\\n'.join\\(sys.path\\)\\)\")",
+      "Bash(xargs grep -l \"SDP\\\\|RSA\\\\|strArr\\\\|old method\\\\|new method\")",
+      "Bash(xargs wc -l)",
+      "Read(//c/ProgramData/Miniconda3/lib/site-packages/**)",
+      "Bash(python -c \"import go2_webrtc_driver; import os; print\\(os.path.dirname\\(go2_webrtc_driver.__file__\\)\\)\")",
+      "Bash(pip list *)",
+      "WebSearch",
+      "WebFetch(domain:forum.mybotshop.de)",
+      "WebFetch(domain:github.com)",
+      "Bash(pip install *)",
+      "Bash(pip index *)",
+      "Bash(gh api *)",
+      "Bash(python *)",
+      "Bash(conda run *)",
+      "WebFetch(domain:wiki.theroboverse.com)"
+    ]
+  }
+}

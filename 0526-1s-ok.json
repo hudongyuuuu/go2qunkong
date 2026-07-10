@@ -1,0 +1,113 @@
+{
+  "dog_count": 3,
+  "steps": [
+    {
+      "action": "RecoveryStand",
+      "duration": 1.0,
+      "params": {}
+    },
+    {
+      "parallel": [
+        {
+          "action": "Move_Backward",
+          "duration": 1.0,
+          "params": {
+            "x": -0.5,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "devices": [
+            1
+          ]
+        },
+        {
+          "action": "Move_Forward",
+          "duration": 1.0,
+          "params": {
+            "x": 0.5,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "devices": [
+            2
+          ]
+        },
+        {
+          "action": "Move_Backward",
+          "duration": 1.0,
+          "params": {
+            "x": -0.5,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "devices": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "action": "Hello",
+      "duration": 1.0,
+      "params": {}
+    },
+    {
+      "action": "Stretch",
+      "duration": 1.0,
+      "params": {}
+    },
+    {
+      "parallel": [
+        {
+          "action": "Scrape",
+          "duration": 1.0,
+          "params": {},
+          "devices": [
+            1
+          ]
+        },
+        {
+          "action": "FingerHeart",
+          "duration": 1.0,
+          "params": {},
+          "devices": [
+            2
+          ]
+        },
+        {
+          "action": "Scrape",
+          "duration": 1.0,
+          "params": {},
+          "devices": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "action": "Dance1",
+      "duration": 1.0,
+      "params": {}
+    },
+    {
+      "action": "FrontPounce",
+      "duration": 1.0,
+      "params": {}
+    },
+    {
+      "action": "Scrape",
+      "duration": 1.0,
+      "params": {}
+    },
+    {
+      "action": "Content",
+      "duration": 1.0,
+      "params": {}
+    },
+    {
+      "action": "StandDown",
+      "duration": 1.0,
+      "params": {}
+    }
+  ]
+}

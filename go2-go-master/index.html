@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GO2 机器狗控制面板 v4.2 - 使用说明</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', '微软雅黑', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 顶部导航 */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* 目录导航 */
+        .toc {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .toc h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .toc a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: #667eea;
+        }
+
+        /* 内容区块 */
+        .section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .section h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .section ul, .section ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .section li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* 图片容器 */
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .image-caption {
+            margin-top: 15px;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* 功能卡片 */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        /* 代码块 */
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+
+        .code-block .comment {
+            color: #75715e;
+        }
+
+        .code-block .command {
+            color: #a6e22e;
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: #e8f4f8;
+            border-left: 5px solid #17a2b8;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip-box strong {
+            color: #17a2b8;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box strong {
+            color: #856404;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box strong {
+            color: #155724;
+        }
+
+        /* 步骤说明 */
+        .steps {
+            counter-reset: step;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 30px;
+        }
+
+        .step:before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        /* 动作列表 */
+        .action-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .action-item {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .action-item:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* FAQ */
+        .faq-item {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: #f5f7fa;
+            padding: 20px;
+            font-weight: bold;
+            color: #667eea;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            padding: 20px;
+            background: white;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            margin-top: 40px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            margin: 10px;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>🤖 GO2 机器狗控制面板 v4.2</h1>
+            <p>专业的 GO2 AIR 机器人控制与舞蹈编排软件</p>
+            <p style="margin-top: 15px;">支持多机群控、舞蹈序列编辑、模拟器测试</p>
+            <span class="version-badge">版本 v4.2 | 更新日期: 2026-01-26</span>
+        </div>
+
+        <!-- 目录 -->
+        <div class="toc">
+            <h2>📖 目录导航</h2>
+            <ul>
+                <li><a href="#intro">1. 软件简介</a></li>
+                <li><a href="#features">2. 核心功能</a></li>
+                <li><a href="#requirements">3. 系统要求</a></li>
+                <li><a href="#install">4. 安装指南</a></li>
+                <li><a href="#quick-start">5. 快速开始</a></li>
+                <li><a href="#device-connect">6. 设备连接</a></li>
+                <li><a href="#dance-editor">7. 舞蹈序列编辑</a></li>
+                <li><a href="#simulator">8. 模拟器使用</a></li>
+                <li><a href="#actions">9. 动作库说明</a></li>
+                <li><a href="#faq">10. 常见问题</a></li>
+                <li><a href="#changelog">11. 版本历史</a></li>
+            </ul>
+        </div>
+
+        <!-- 1. 软件简介 -->
+        <div class="section" id="intro">
+            <h2>1. 软件简介</h2>
+
+            <div class="image-container">
+                <img src="https://img-blog.csdnimg.cn/direct/8b5c8f9c3e3f4a7d9b2e8f5c6d7e8f9a.jpg" alt="GO2 AIR 机器狗" onerror="this.style.display='none'">
+                <p class="image-caption">GO2 AIR 机器狗实物图</p>
+            </div>
+
+            <p><strong>GO2 机器狗控制面板</strong> 是一款专为 Unitree GO2 AIR 机器人设计的专业控制软件，支持单机控制、多机群控、舞蹈编排等丰富功能。无论是个人娱乐、教育培训还是商业表演，都能满足您的需求。</p>
+
+            <div class="success-box">
+                <strong>✨ 主要特点：</strong>
+                <ul style="margin-top: 10px; margin-bottom: 0;">
+                    <li>🎨 直观的可视化界面，操作简单易懂</li>
+                    <li>🤖 内置模拟器，无需真实设备也能测试</li>
+                    <li>💃 强大的舞蹈序列编辑功能</li>
+                    <li>🌐 自动局域网扫描，快速发现设备</li>
+                    <li>🎯 支持同时控制多只机器狗</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 2. 核心功能 -->
+        <div class="section" id="features">
+            <h2>2. 核心功能详解</h2>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h4>时间轴编辑器</h4>
+                    <p><strong>视频编辑器风格的界面设计</strong></p>
+                    <ul>
+                        <li>拖拽排序动作，自由组合</li>
+                        <li>颜色编码分类，一目了然</li>
+                        <li>实时进度跟踪</li>
+                        <li>执行时高亮显示当前动作</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #666;">就像剪视频一样编辑机器狗的动作序列，所见即所得！</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h4>智能网络扫描</h4>
+                    <p><strong>自动发现局域网内的 GO2 设备</strong></p>
+                    <ul>
+                        <li>自动获取本机 IP 和网段</li>
+                        <li>并发扫描，速度快</li>
+                        <li>识别 GO2 专用端口（9991/554）</li>
+                        <li>实时显示扫描进度</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #666;">无需手动输入 IP 地址，一键扫描所有设备！</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h4>GO2 AIR 模拟器</h4>
+                    <p><strong>无需真实设备，也能测试功能</strong></p>
+                    <ul>
+                        <li>可视化机器狗界面</li>
+                        <li>实时动作反馈动画</li>
+                        <li>支持多只模拟狗</li>
+                        <li>离线测试舞蹈序列</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #666;">没有设备也能设计和预览舞蹈动作！</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h4>灵活的执行模式</h4>
+                    <p><strong>根据需求选择执行方式</strong></p>
+                    <ul>
+                        <li>真实设备执行：控制真实机器狗</li>
+                        <li>模拟器执行：仅使用模拟器测试</li>
+                        <li>混合模式：真实+模拟同时执行</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #666;">测试和表演场景都能完美适配！</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h4>29+ 内置动作</h4>
+                    <p><strong>丰富的动作库，涵盖多个类别</strong></p>
+                    <ul>
+                        <li>基础动作：站立、蹲下、打招呼</li>
+                        <li>移动动作：前进、后退、转向</li>
+                        <li>舞蹈动作：5 款精选舞蹈</li>
+                        <li>特技动作：跳跃、翻滚、倒立等</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #666;">持续更新中，让机器狗展现更多精彩动作！</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h4>详细的日志记录</h4>
+                    <p><strong>完整的操作和调试信息</strong></p>
+                    <ul>
+                        <li>动作执行日志</li>
+                        <li>设备连接状态</li>
+                        <li>错误诊断信息</li>
+                        <li>时间戳记录</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #666;">方便问题排查和性能优化！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 系统要求 -->
+        <div class="section" id="requirements">
+            <h2>3. 系统要求</h2>
+
+            <table>
+                <tr>
+                    <th width="30%">项目</th>
+                    <th>最低要求</th>
+                    <th>推荐配置</th>
+                </tr>
+                <tr>
+                    <td><strong>操作系统</strong></td>
+                    <td>Windows 10 / macOS 10.14+ / Linux (Ubuntu 20.04+)</td>
+                    <td>Windows 11 / macOS 13+ / Linux (Ubuntu 22.04+)</td>
+                </tr>
+                <tr>
+                    <td><strong>Python 版本</strong></td>
+                    <td>Python 3.9</td>
+                    <td>Python 3.11+</td>
+                </tr>
+                <tr>
+                    <td><strong>内存</strong></td>
+                    <td>4 GB RAM</td>
+                    <td>8 GB RAM 或更高</td>
+                </tr>
+                <tr>
+                    <td><strong>网络</strong></td>
+                    <td>局域网连接</td>
+                    <td>稳定的局域网（千兆网络更佳）</td>
+                </tr>
+                <tr>
+                    <td><strong>其他</strong></td>
+                    <td>管理员权限（网络扫描需要）</td>
+                    <td>SSD 硬盘（提升加载速度）</td>
+                </tr>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>如果您的系统不满足最低要求，可能会遇到性能问题或某些功能无法使用。建议使用推荐配置以获得最佳体验。
+            </div>
+        </div>
+
+        <!-- 4. 安装指南 -->
+        <div class="section" id="install">
+            <h2>4. 安装指南</h2>
+
+            <div class="steps">
+                <div class="step">
+                    <h3>下载软件</h3>
+                    <p>从 Gitee 仓库下载最新版本的代码：</p>
+                    <div class="code-block">
+<span class="comment"># 方式 1: 使用 Git 克隆</span>
+<span class="command">git clone https://gitee.com/simon_133/go2-go.git</span>
+<span class="command">cd go2-go</span>
+
+<span class="comment"># 方式 2: 直接下载 ZIP 压缩包</span>
+<span class="comment"># 访问 https://gitee.com/simon_133/go2-go</span>
+<span class="comment"># 点击 "克隆/下载" → "下载ZIP"</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>安装 Python 依赖</h3>
+                    <p>打开命令行窗口，进入软件目录，安装所需的依赖库：</p>
+                    <div class="code-block">
+<span class="comment"># Windows 用户</span>
+<span class="command">pip install PyQt5 go2-webrtc-driver</span>
+
+<span class="comment"># 如果下载速度慢，可以使用国内镜像源</span>
+<span class="command">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5 go2-webrtc-driver</span>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ 注意：</strong>首次安装可能需要几分钟时间，请耐心等待。如果遇到权限问题，请使用管理员权限运行命令行。
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>验证安装</h3>
+                    <p>运行测试脚本，检查是否安装成功：</p>
+                    <div class="code-block">
+<span class="command">python test_v4.py</span>
+                    </div>
+                    <p>如果看到 "All tests passed!"，说明安装成功！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 快速开始 -->
+        <div class="section" id="quick-start">
+            <h2>5. 快速开始</h2>
+
+            <h3>5.1 启动软件</h3>
+
+            <div class="steps">
+                <div class="step">
+                    <h4>Windows 用户</h4>
+                    <p>双击运行 <code>launch_v4.bat</code> 批处理文件，或在命令行中执行：</p>
+                    <div class="code-block">
+<span class="command">python go2_control_panel_v4.py</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4>macOS / Linux 用户</h4>
+                    <p>在终端中执行：</p>
+                    <div class="code-block">
+<span class="command">python3 go2_control_panel_v4.py</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="https://img-blog.csdnimg.cn/direct/a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6.jpg" alt="软件主界面" onerror="this.src='https://via.placeholder.com/800x500/667eea/ffffff?text=GO2+Control+Panel+Interface'">
+                <p class="image-caption">软件主界面示意图</p>
+            </div>
+
+            <h3>5.2 界面说明</h3>
+
+            <p>软件启动后，您会看到一个分为三个区域的主窗口：</p>
+
+            <ul>
+                <li><strong>左侧区域 - 动作选择面板</strong>
+                    <ul>
+                        <li>列出了所有可用的动作</li>
+                        <li>按类别分组：基础、移动、舞蹈、特技</li>
+                        <li>点击动作可添加到右侧序列</li>
+                    </ul>
+                </li>
+                <li><strong>右上区域 - 网络设备列表</strong>
+                    <ul>
+                        <li>显示局域网内发现的 GO2 设备</li>
+                        <li>勾选设备以建立连接</li>
+                        <li>显示设备 IP 地址和连接状态</li>
+                    </ul>
+                </li>
+                <li><strong>右中区域 - 舞蹈序列编辑器</strong>
+                    <ul>
+                        <li>时间轴形式的序列列表</li>
+                        <li>显示已添加的动作序列</li>
+                        <li>可以调整动作顺序和参数</li>
+                    </ul>
+                </li>
+                <li><strong>右下区域 - 日志窗口</strong>
+                    <ul>
+                        <li>实时显示操作日志</li>
+                        <li>显示执行状态和错误信息</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>5.3 打开模拟器（可选）</h3>
+
+            <p>如果您没有真实的 GO2 设备，可以使用内置的模拟器进行测试：</p>
+
+            <div class="code-block">
+<span class="comment"># 方法 1: 在主程序中点击"🟢 打开模拟器"按钮</span>
+
+<span class="comment"># 方法 2: 独立运行模拟器</span>
+<span class="command">python go2_simulator.py</span>
+            </div>
+
+            <div class="image-container">
+                <img src="https://img-blog.csdnimg.cn/direct/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.jpg" alt="模拟器界面" onerror="this.src='https://via.placeholder.com/800x500/764ba2/ffffff?text=GO2+Simulator+Interface'">
+                <p class="image-caption">GO2 AIR 模拟器界面</p>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 模拟器用途：</strong>模拟器非常适合在没有真实设备时测试舞蹈序列，或者用于教学演示。您可以先在模拟器上设计好动作，确认无误后再用真实设备执行。
+            </div>
+        </div>
+
+        <!-- 6. 设备连接 -->
+        <div class="section" id="device-connect">
+            <h2>6. 设备连接</h2>
+
+            <h3>6.1 扫描局域网设备</h3>
+
+            <p>软件启动时会自动检测本机 IP 并填充扫描网段。点击"扫描网络"按钮开始扫描：</p>
+
+            <div class="steps">
+                <div class="step">
+                    <h4>步骤 1：确认网段</h4>
+                    <p>检查自动填充的网段是否正确。例如：</p>
+                    <ul>
+                        <li>本机 IP: <code>192.168.1.100</code></li>
+                        <li>扫描网段: <code>192.168.1.0/24</code> ✅ 正确</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>步骤 2：开始扫描</h4>
+                    <p>点击"扫描网络"按钮，等待 30-60 秒。扫描过程中会实时显示进度：</p>
+                    <div class="code-block">
+扫描进度: 10% (25/254)
+扫描进度: 20% (50/254)
+...
+✓ 发现GO2设备: 192.168.1.31 - 端口: [9991, 554]
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4>步骤 3：查看结果</h4>
+                    <p>扫描完成后，设备列表会显示所有发现的设备。GO2 设备会自动勾选。</p>
+                </div>
+
+                <div class="step">
+                    <h4>步骤 4：连接设备</h4>
+                    <p>勾选要连接的设备，点击"连接选中设备"按钮。</p>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ 注意事项：</strong>
+                <ul style="margin-top: 10px;">
+                    <li>确保 GO2 设备和电脑在<strong>同一局域网</strong>内</li>
+                    <li>确保设备已开机并联网</li>
+                    <li>如果设备未被发现，尝试手动 ping 设备 IP 检查网络连通性</li>
+                    <li>某些企业网络可能有端口限制，请联系网络管理员</li>
+                </ul>
+            </div>
+
+            <h3>6.2 手动添加设备</h3>
+
+            <p>如果您知道设备的 IP 地址，可以直接手动添加：</p>
+
+            <div class="steps">
+                <div class="step">
+                    <p>在"手动添加 IP"输入框中输入设备 IP，例如：<code>192.168.1.31</code></p>
+                </div>
+                <div class="step">
+                    <p>点击"添加设备"按钮</p>
+                </div>
+                <div class="step">
+                    <p>设备会出现在列表中，勾选后点击"连接选中设备"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. 舞蹈序列编辑 -->
+        <div class="section" id="dance-editor">
+            <h2>7. 舞蹈序列编辑</h2>
+
+            <p>舞蹈序列编辑器是本软件的核心功能，让您能够轻松创建复杂的机器狗表演动作。</p>
+
+            <h3>7.1 添加动作到序列</h3>
+
+            <div class="steps">
+                <div class="step">
+                    <p>在左侧动作列表中找到您想要的动作</p>
+                </div>
+                <div class="step">
+                    <p>双击动作或单击后点击"添加到序列"按钮</p>
+                </div>
+                <div class="step">
+                    <p>动作会出现在右侧的时间轴列表中</p>
+                </div>
+            </div>
+
+            <h3>7.2 调整动作参数</h3>
+
+            <p>每个动作都可以设置以下参数：</p>
+
+            <ul>
+                <li><strong>动作名称</strong>：显示动作的中文名称</li>
+                <li><strong>动作时长</strong>：设置动作执行的持续时间（秒）
+                    <ul>
+                        <li>基础动作通常 2-3 秒</li>
+                        <li>舞蹈动作通常 5-8 秒</li>
+                        <li>可以根据需要调整</li>
+                    </ul>
+                </li>
+                <li><strong>动作 ID</strong>：内部使用的标识符（自动生成）</li>
+            </ul>
+
+            <h3>7.3 调整序列顺序</h3>
+
+            <p>您可以自由调整动作的执行顺序：</p>
+
+            <ul>
+                <li><strong>拖拽排序</strong>：直接拖动动作项到新位置</li>
+                <li><strong>删除动作</strong>：选中动作后点击"移除"按钮或按 Delete 键</li>
+                <li><strong>清空序列</strong>：点击"清空序列"按钮删除所有动作</li>
+                <li><strong>保存序列</strong>：可以将当前序列保存到文件（功能开发中）</li>
+            </ul>
+
+            <h3>7.4 执行舞蹈序列</h3>
+
+            <p>创建好序列后，点击"执行序列"按钮开始执行：</p>
+
+            <div class="image-container">
+                <img src="https://img-blog.csdnimg.cn/direct/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7.jpg" alt="执行序列" onerror="this.src='https://via.placeholder.com/800x400/667eea/ffffff?text=Dance+Sequence+Execution'">
+                <p class="image-caption">舞蹈序列执行示意图</p>
+            </div>
+
+            <ol>
+                <li><strong>选择执行模式</strong>
+                    <ul>
+                        <li>🔴 真实设备执行：发送到已连接的真实 GO2 设备</li>
+                        <li>🟢 模拟器执行：仅在模拟器中演示</li>
+                        <li>🔶 混合模式：同时发送给真实设备和模拟器</li>
+                    </ul>
+                </li>
+                <li><strong>观看执行过程</strong>
+                    <ul>
+                        <li>进度条显示整体进度</li>
+                        <li>当前执行的动作会高亮显示</li>
+                        <li>日志窗口实时打印执行信息</li>
+                    </ul>
+                </li>
+                <li><strong>执行完成</strong>
+                    <ul>
+                        <li>显示成功/失败统计</li>
+                        <li>机器狗回到待机状态</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="tip-box">
+                <strong>💡 使用技巧：</strong>
+                <ul style="margin-top: 10px;">
+                    <li>先用模拟器测试序列，确认效果后再用真实设备</li>
+                    <li>合理安排动作时长，让动作衔接更自然</li>
+                    <li>可以在序列开始前添加"站立"动作，确保机器狗处于正确姿态</li>
+                    <li>在序列结束后添加"蹲下"或"停止"动作，让机器狗平稳结束</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 8. 模拟器使用 -->
+        <div class="section" id="simulator">
+            <h2>8. 模拟器使用</h2>
+
+            <p>GO2 AIR 模拟器是一个独立的可视化组件，让您在没有真实设备的情况下也能测试和预览动作。</p>
+
+            <h3>8.1 模拟器界面</h3>
+
+            <div class="image-container">
+                <img src="https://img-blog.csdnimg.cn/direct/3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8.jpg" alt="模拟器界面详细说明" onerror="this.src='https://via.placeholder.com/800x600/764ba2/ffffff?text=Simulator+Interface+Details'">
+                <p class="image-caption">模拟器界面组成</p>
+            </div>
+
+            <p>模拟器包含以下部分：</p>
+
+            <ul>
+                <li><strong>模拟狗显示区域</strong>：显示每只模拟狗的可视化状态
+                    <ul>
+                        <li>圆形背景：颜色表示当前动作类型</li>
+                        <li>狗图标：简化的机器狗图形</li>
+                        <li>进度条：显示动作执行进度</li>
+                        <li>状态文本：显示当前动作名称</li>
+                    </ul>
+                </li>
+                <li><strong>控制面板</strong>：
+                    <ul>
+                        <li>➕ 添加模拟狗：增加新的模拟狗</li>
+                        <li>➖ 移除选中：删除选中的模拟狗</li>
+                        <li>🗑️ 清空全部：删除所有模拟狗</li>
+                    </ul>
+                </li>
+                <li><strong>快速测试按钮</strong>：
+                    <ul>
+                        <li>预设的动作按钮，点击即可测试</li>
+                        <li>包括：站立、蹲下、打招呼、前进、舞蹈、跳跃等</li>
+                    </ul>
+                </li>
+                <li><strong>执行日志</strong>：
+                    <ul>
+                        <li>记录所有执行过的动作</li>
+                        <li>显示时间戳和详细信息</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>8.2 选择要控制的模拟狗</h3>
+
+            <p>每只模拟狗都有一个复选框：</p>
+
+            <ul>
+                <li><strong>勾选</strong>：该模拟狗会被包含在执行中</li>
+                <li><strong>不勾选</strong>：该模拟狗不会执行动作</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong>您可以创建多只模拟狗，然后选择其中一部分执行特定动作，实现分组控制效果！
+            </div>
+
+            <h3>8.3 颜色映射系统</h3>
+
+            <p>模拟器使用颜色来区分不同类型的动作：</p>
+
+            <table>
+                <tr>
+                    <th>颜色</th>
+                    <th>动作类型</th>
+                    <th>示例</th>
+                </tr>
+                <tr>
+                    <td style="background: #4caf50; color: white;">绿色</td>
+                    <td>基础动作</td>
+                    <td>站立、蹲下</td>
+                </tr>
+                <tr>
+                    <td style="background: #2196f3; color: white;">蓝色</td>
+                    <td>姿态调整</td>
+                    <td>伸展、Sit</td>
+                </tr>
+                <tr>
+                    <td style="background: #ffeb3b; color: black;">黄色</td>
+                    <td>交互动作</td>
+                    <td>打招呼、握手</td>
+                </tr>
+                <tr>
+                    <td style="background: #9c27b0; color: white;">紫色</td>
+                    <td>移动动作</td>
+                    <td>前进、后退、转向</td>
+                </tr>
+                <tr>
+                    <td style="background: #e91e63; color: white;">粉色</td>
+                    <td>舞蹈动作</td>
+                    <td>Dance1-5</td>
+                </tr>
+                <tr>
+                    <td style="background: #f44336; color: white;">红色</td>
+                    <td>特技动作</td>
+                    <td>跳跃、翻滚</td>
+                </tr>
+            </table>
+
+            <h3>8.4 模拟器与主程序配合</h3>
+
+            <p>模拟器可以独立运行，也可以与主程序配合使用：</p>
+
+            <ol>
+                <li><strong>启动主程序</strong>：运行 <code>go2_control_panel_v4.py</code></li>
+                <li><strong>打开模拟器</strong>：点击主程序中的"🟢 打开模拟器"按钮</li>
+                <li><strong>创建序列</strong>：在主程序中添加动作到序列</li>
+                <li><strong>选择执行模式</strong>：在执行对话框中选择"模拟器执行"</li>
+                <li><strong>观看效果</strong>：模拟器会实时显示动作执行过程</li>
+            </ol>
+        </div>
+
+        <!-- 9. 动作库说明 -->
+        <div class="section" id="actions">
+            <h2>9. 动作库说明</h2>
+
+            <p>软件内置了 29+ 个动作，分为以下几大类：</p>
+
+            <h3>9.1 基础动作</h3>
+
+            <div class="action-list">
+                <div class="action-item">
+                    <strong>站立 (StandUp)</strong>
+                    <p>从任何姿态恢复到站立状态</p>
+                </div>
+                <div class="action-item">
+                    <strong>蹲下 (Sit)</strong>
+                    <p>降低身体重心，蹲下姿态</p>
+                </div>
+                <div class="action-item">
+                    <strong>打招呼 (Hello)</strong>
+                    <p>前腿抬起，打招呼动作</p>
+                </div>
+                <div class="action-item">
+                    <strong>停止 (Stop)</strong>
+                    <p>立即停止当前动作</p>
+                </div>
+            </div>
+
+            <h3>9.2 移动动作</h3>
+
+            <div class="action-list">
+                <div class="action-item">
+                    <strong>前进 (Forward)</strong>
+                    <p>向前直线移动</p>
+                </div>
+                <div class="action-item">
+                    <strong>后退 (Backward)</strong>
+                    <p>向后直线移动</p>
+                </div>
+                <div class="action-item">
+                    <strong>左转 (TurnLeft)</strong>
+                    <p>原地向左转90度</p>
+                </div>
+                <div class="action-item">
+                    <strong>右转 (TurnRight)</strong>
+                    <p>原地向右转90度</p>
+                </div>
+            </div>
+
+            <h3>9.3 舞蹈动作</h3>
+
+            <div class="action-list">
+                <div class="action-item">
+                    <strong>Dance1</strong>
+                    <p>基础舞蹈动作1</p>
+                </div>
+                <div class="action-item">
+                    <strong>Dance2</strong>
+                    <p>基础舞蹈动作2</p>
+                </div>
+                <div class="action-item">
+                    <strong>Dance3</strong>
+                    <p>基础舞蹈动作3</p>
+                </div>
+                <div class="action-item">
+                    <strong>Dance4</strong>
+                    <p>进阶舞蹈动作4</p>
+                </div>
+                <div class="action-item">
+                    <strong>Dance5</strong>
+                    <p>进阶舞蹈动作5</p>
+                </div>
+            </div>
+
+            <h3>9.4 特技动作</h3>
+
+            <div class="action-list">
+                <div class="action-item">
+                    <strong>跳跃 (Jump)</strong>
+                    <p>向上跳跃动作</p>
+                </div>
+                <div class="action-item">
+                    <strong>伸展 (Stretch)</strong>
+                    <p>身体伸展拉伸</p>
+                </div>
+                <div class="action-item">
+                    <strong>倒立 (HandStand)</strong>
+                    <p>前腿抬起倒立</p>
+                </div>
+                <div class="action-item">
+                    <strong>翻滚 (Roll)</strong>
+                    <p>地面翻滚动作</p>
+                </div>
+                <div class="action-item">
+                    <strong>后空翻 (Flip)</strong>
+                    <p>向后空翻特技</p>
+                </div>
+                <div class="action-item">
+                    <strong>乞求 (Beg)</strong>
+                    <p>坐立乞求姿态</p>
+                </div>
+                <div class="action-item">
+                    <strong>握手 (ShakeHand)</strong>
+                    <p>伸出前爪握手</p>
+                </div>
+                <div class="action-item">
+                    <strong>击掌 (HighFive)</strong>
+                    <p>高举前爪击掌</p>
+                </div>
+            </div>
+
+            <h3>9.5 步态动作</h3>
+
+            <div class="action-list">
+                <div class="action-item">
+                    <strong>小跑 (Trot)</strong>
+                    <p>对角小跑步态</p>
+                </div>
+                <div class="action-item">
+                    <strong>侧步 (Pace)</strong>
+                    <p>同侧侧步步态</p>
+                </div>
+                <div class="action-item">
+                    <strong>跳跃步 (Bound)</strong>
+                    <p>前腿同步跳跃</p>
+                </div>
+                <div class="action-item">
+                    <strong>奔跑 (Gallop)</strong>
+                    <p>四腿奔跑步态</p>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 使用建议：</strong>
+                <ul style="margin-top: 10px;">
+                    <li>动作时长建议：基础动作 2-3 秒，舞蹈动作 5-8 秒，特技动作 3-5 秒</li>
+                    <li>不同动作之间可以添加短暂停顿，让表演更自然</li>
+                    <li>建议先用模拟器测试每个动作，了解其效果</li>
+                    <li>组合不同类型的动作可以创造更丰富的表演效果</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 10. 常见问题 -->
+        <div class="section" id="faq">
+            <h2>10. 常见问题</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">Q1: 扫描网络时找不到设备怎么办？</div>
+                <div class="faq-answer">
+                    <p><strong>A:</strong>请按以下步骤排查：</p>
+                    <ol>
+                        <li>确认 GO2 设备和电脑在<strong>同一局域网</strong></li>
+                        <li>检查设备是否开机并联网（指示灯正常）</li>
+                        <li>手动 ping 设备 IP：打开命令行，执行 <code>ping 192.168.x.x</code></li>
+                        <li>检查防火墙设置，确保允许 Python 网络访问</li>
+                        <li>尝试手动添加设备 IP</li>
+                        <li>如果是企业网络，可能需要联系网络管理员开放端口</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q2: 模拟器没有反应怎么办？</div>
+                <div class="faq-answer">
+                    <p><strong>A:</strong>可能的原因和解决方法：</p>
+                    <ul>
+                        <li><strong>未勾选模拟狗</strong>：确保至少勾选了一只模拟狗的复选框</li>
+                        <li><strong>模拟器窗口未打开</strong>：点击"🟢 打开模拟器"按钮</li>
+                        <li><strong>动作名称不匹配</strong>：某些动作可能只支持英文名称或中文名称</li>
+                        <li><strong>信号未连接</strong>：重启模拟器和主程序</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q3: 执行序列时机器狗没有反应？</div>
+                <div class="faq-answer">
+                    <p><strong>A:</strong>请检查：</p>
+                    <ol>
+                        <li>确认已勾选并连接了设备（设备列表中显示为绿色✅）</li>
+                        <li>查看日志窗口，检查是否有错误信息</li>
+                        <li>确认选择了正确的执行模式（真实设备执行）</li>
+                        <li>检查网络连接是否稳定</li>
+                        <li>尝试单个动作测试，确认设备正常</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q4: 软件启动报错 "ModuleNotFoundError" 怎么办？</div>
+                <div class="faq-answer">
+                    <p><strong>A:</strong>这说明缺少依赖库，请安装：</p>
+                    <div class="code-block">
+pip install PyQt5 go2-webrtc-driver
+                    </div>
+                    <p>如果安装速度慢，使用国内镜像：</p>
+                    <div class="code-block">
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyQt5 go2-webrtc-driver
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q5: 如何控制多只机器狗同时执行？</div>
+                <div class="faq-answer">
+                    <p><strong>A:</strong>很简单！</p>
+                    <ol>
+                        <li>在扫描网络后，<strong>勾选多台设备</strong></li>
+                        <li>点击"连接选中设备"</li>
+                        <li>创建舞蹈序列</li>
+                        <li>执行时选择"真实设备执行"</li>
+                        <li>所有已连接的设备会同时执行相同的动作</li>
+                    </ol>
+                    <p><strong>提示：</strong>您也可以通过不勾选某些设备来实现选择性控制！</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q6: 可以保存和加载舞蹈序列吗？</div>
+                <div class="faq-answer">
+                    <p><strong>A:</strong>当前版本（v4.2）的保存/加载功能正在开发中。暂时建议：</p>
+                    <ul>
+                        <li>截图记录您的序列配置</li>
+                        <li>或用笔记记录动作顺序和参数</li>
+                        <li>后续版本会添加完整的保存/加载功能</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q7: 软件是免费的吗？</div>
+                <div class="faq-answer">
+                    <p><strong>A:</strong>是的！本软件完全开源免费，您可以自由使用、修改和分发。项目代码托管在 Gitee 上，欢迎贡献代码和建议！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. 版本历史 -->
+        <div class="section" id="changelog">
+            <h2>11. 版本历史</h2>
+
+            <h3>v4.2 - Shutdown Fix (2026-01-26)</h3>
+            <ul>
+                <li>✅ 修复网络扫描 "cannot schedule new futures after interpreter shutdown" 错误</li>
+                <li>✅ 优化线程池管理，分批提交任务</li>
+                <li>✅ 增强错误处理和异常捕获</li>
+                <li>✅ 添加 Gitee Pages 首页（虽然 Pages 服务已下线）</li>
+            </ul>
+
+            <h3>v4.1 - 模拟器集成 (2026-01-26)</h3>
+            <ul>
+                <li>🎨 新增时间轴编辑器（视频编辑器风格）</li>
+                <li>🤖 新增 GO2 AIR 模拟器（独立可视化界面）</li>
+                <li>🎯 新增执行模式选择（真实/模拟/混合）</li>
+                <li>📝 新增详细的调试日志打印</li>
+                <li>🔍 优化网络扫描（自动获取本机 IP）</li>
+            </ul>
+
+            <h3>v4.0 - 基础版本 (2026-01-25)</h3>
+            <ul>
+                <li>🔗 WebRTC 连接支持</li>
+                <li>🌐 局域网设备扫描</li>
+                <li>💃 舞蹈序列编辑器</li>
+                <li>📋 29+ 内置动作</li>
+                <li>📊 日志和统计功能</li>
+            </ul>
+
+            <div class="success-box">
+                <strong>📊 测试状态：</strong>v4.2 版本已通过全部 12 项测试，测试通过率 100%！
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer">
+            <h3>🚀 立即开始使用 GO2 机器狗控制面板！</h3>
+            <p style="margin-top: 15px;">强大的功能、简单的操作、专业的效果</p>
+
+            <div style="margin-top: 30px;">
+                <a href="https://gitee.com/simon_133/go2-go" class="download-btn">📥 下载软件</a>
+                <a href="https://gitee.com/simon_133/go2-go/issues" class="download-btn">📝 反馈问题</a>
+            </div>
+
+            <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+
+            <p>© 2026 GO2 机器狗控制面板 | 使用 ❤️ 制作</p>
+            <p>项目地址: <a href="https://gitee.com/simon_133/go2-go" style="color: #667eea;">https://gitee.com/simon_133/go2-go</a></p>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #999;">
+                本软件开源免费，欢迎贡献代码和建议<br>
+                Unitree GO2 是宇树科技公司的注册商标
+            </p>
+        </div>
+    </div>
+</body>
+</html>

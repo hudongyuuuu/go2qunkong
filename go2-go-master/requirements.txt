@@ -1,0 +1,24 @@
+# Unitree GO2AIR Robot Control - Requirements
+
+# Core Framework
+PyQt5==5.15.10
+PyQt5-sip==12.13.0
+
+# Robot Control
+go2-webrtc-connect  # Unitree GO2 WebRTC connection library
+
+# Network Communication
+requests==2.31.0
+websockets==12.0
+
+# Audio Processing
+pygame==2.5.2
+numpy==1.26.0
+
+# Environment
+python-dotenv==1.0.0
+
+# Optional: Advanced audio analysis
+scipy==1.11.4
+librosa==0.10.1
+soundfile==0.12.1
